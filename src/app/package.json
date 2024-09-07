@@ -1,0 +1,29 @@
+{
+  "name": "privplan",
+  "version": "0.0.1",
+  "description": "An inovative secure way to communicate with other people to work on projects",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SummerInDecember/PrivPlan.git"
+  },
+  "keywords": [
+    "c#",
+    "chat",
+    "encryption",
+    "secure"
+  ],
+  "author": "SummerInDecember",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SummerInDecember/PrivPlan/issues"
+  },
+  "homepage": "https://github.com/SummerInDecember/PrivPlan#readme",
+  "devDependencies": {
+    "electron": "^32.0.2"
+  }
+}

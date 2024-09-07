@@ -1,0 +1,31 @@
+.mainDiv{
+    margin:0%;
+    padding: 0%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.mainDiv p{
+    text-align: center;
+    border-bottom: 1px solid black;
+    line-height: 0.1em;
+}
+
+p span{
+    background-color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0%;
+    margin-top: 10px;
+}
+
+.mainDiv a:not(:last-child)
+{
+    background-color: blue;
+    padding: 0.5em;
+    padding-left: 7%;
+    border-radius: 0.5em;
+}
