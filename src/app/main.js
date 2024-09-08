@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain} = require('electron/main')
 const path = require('node:path')
-const fs = require("fs");
+const fs = require("node:fs");
 const os = require("os");
+const { dialog } = require('electron');
 
 const platform = process.platform;
+const pathToMainConfigLinux = `/home/${os.userInfo().username}/.config/Privplan/config.json`;
 
+console.log(os.userInfo().username)
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -26,17 +29,45 @@ const createWindow = () => {
       break;
     case "linux":
       
+
       try{ // check if config exists and if it has any error
-      if(!fs.existsSync(`/home/${os.userInfo().username}/.config/privplan/config.json`))
-        win.loadFile('src/html/index.html')
-      else{
-        
-      }
-      break;
+        fs.access(pathToMainConfigLinux, fs.constants.F_OK, (failedToRead) =>{
+          if(failedToRead)
+            win.loadFile('src/html/firstPage.html');
+          else
+          {    
+            fs.readFile(pathToMainConfigLinux, "utf8", (err, data) => {
+                if(err){
+                  
+                }
+                else{
+                  try{
+                    let mainCfgJson = JSON.parse(data);
+                  }
+                  catch(error)
+                  {
+                    console.log("There was a problem with the json");
+                    win.loadFile('src/html/firstPage.html');
+
+                    dialog.showMessageBox(win, {
+                      type: "error",
+                      buttons: ["OK"],
+                      Title: "Alert",
+                      detail: `There was a problem with the json at ${pathToMainConfigLinux}` 
+                    });
+                  }
+                }
+            
+                
+              });
+          }
+        })
+
       }
       catch(err){
 
       }
+      break;
       
     default:
       console.log("operating system not supported");
