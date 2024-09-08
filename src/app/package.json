@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/SummerInDecember/PrivPlan#readme",
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
     "electron": "^32.0.2"
   }
 }
