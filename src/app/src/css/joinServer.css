@@ -6,16 +6,18 @@
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 40%;
+    width: 45em;
     align-content: center;
     text-align: center;
 }
 
 .mainDiv label{
-    float: left;
+
+   float: left;
 }
 
 .mainDiv input{
     float: left;
+    margin-left: 1em;
 }
 
