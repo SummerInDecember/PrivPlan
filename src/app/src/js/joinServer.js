@@ -1,42 +1,87 @@
 function joinServer()
 {
     let server = document.getElementById("server").value;
-    if(server && server.includes("."))
+    if(server && server.includes(".") && server.includes(":"))
     {
-        let parts = server.split(".");
+        let partsOfIp = server.split(".");
+        let ipAndPort = server.split(":");
 
-        try{
+        if(validateIp(partsOfIp, ipAndPort))
+        {
 
-            if(parts.length === 4) // validates if its a valid ip address with a port
+        }
+        else
+        {
+            if(!ipAndPort[1])
             {
-                for(let i = 0; i<parts.length; i++)
+                if(validateIp(partsOfIp, server.concat("80").split(":")))
                 {
-                    let num = parseInt(parts[i]);
-                    console.log((num < 1 && (i == 0 || i == 3)));
-                    if((!isNaN(num)) || (num < 1 && (i == 0 || i == 3)) 
-                    || (num < 0 && (i == 1 || i == 2)) || (num > 223 && i == 0)
-                    || (num < 255 && (i == 1 || i == 2)) || (num < 254 && i ==3))
-                    {
-                        console.log("valid ip part");
-                    }
-                    else
-                    {
-                        throw "invalid ip address";
-                    }
+
                 }
             }
             else
             {
-
+                console.log("invalid ip address");
             }
         }
-        catch(err)
-        {
-            console.log(err);
-        }
+        
     }
     else
     {
-        console.log("error");
+        if(!server.includes(":"))
+        {
+            if(validateIp(partsOfIp, server.concat(":80").split(":")))
+            {
+
+            }
+        }
     }
+}
+
+function validateIp(partsOfIp, ipAndPort)
+{
+    try{
+            
+        if(partsOfIp.length === 4 && ipAndPort[1]) // validates if its a valid ip address with a port
+        {
+
+            let numPartsOfIp = partsOfIp.map(str => parseInt(str));
+
+            for(num of numPartsOfIp)
+            {
+                if(isNaN(num))
+                    return false;
+            }
+
+            if(numPartsOfIp[0] >= 1 && numPartsOfIp[3] >= 1         // Im so sorry for this
+            && numPartsOfIp[1] >= 0 && numPartsOfIp[2] >= 0         // but i just cant wrap my head 
+            && numPartsOfIp[0] < 256 && numPartsOfIp[3] < 256       // around regex
+            && numPartsOfIp[0] < 224 && numPartsOfIp[3] < 255)      // maybe one day i will take the
+            {                                                       // time to really learn regex,
+                console.log("valid ip part");                       // then I will replace this monster
+            }                                                       // for regexp
+            else
+            {
+                console.log("You messed up the ip lol");
+                return false
+            }
+            
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    catch(err)
+    {
+        console.log(err);   
+        return false;    
+    }
+}
+
+function sendRequest()
+{
+    // TODO: Implement
 }
