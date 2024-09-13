@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privplan-api", "privplan-api\privplan-api.csproj", "{55F18DAD-EDC8-41BD-AEE6-7C9FB267B5BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "privplan-api", "privplan-api.csproj", "{A87B6DD7-ADA7-4886-AE5E-E4B4CE5FA513}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{55F18DAD-EDC8-41BD-AEE6-7C9FB267B5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55F18DAD-EDC8-41BD-AEE6-7C9FB267B5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55F18DAD-EDC8-41BD-AEE6-7C9FB267B5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55F18DAD-EDC8-41BD-AEE6-7C9FB267B5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87B6DD7-ADA7-4886-AE5E-E4B4CE5FA513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87B6DD7-ADA7-4886-AE5E-E4B4CE5FA513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87B6DD7-ADA7-4886-AE5E-E4B4CE5FA513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87B6DD7-ADA7-4886-AE5E-E4B4CE5FA513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
