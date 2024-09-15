@@ -1,12 +1,20 @@
 const tryJoinUri = 'api/AllowedDevices';
 
+const ServerObj = {
+    serverIpOrDomain:document.getElementById("server").value,
+    password: document.getElementById("servPass").value,
+    hasDoubleColon: server.includes(":"),
+    hasPeriod: server.includes("."),
+    endsWithSlash: server.endsWith("/")
+};
+
 function joinServer()
 {
-    let server = document.getElementById("server").value;
-    if(server && server.includes(".") && server.includes(":"))
+    if(ServerObj.serverIpOrDomain && ServerObj.hasDoubleColon && ServerObj.hasPeriod 
+        && ServerObj.password)
     {
-        let partsOfIp = server.split(".");
-        let ipAndPort = server.split(":");
+        var partsOfIp = server.split(".");
+        var ipAndPort = server.split(":");
 
         if(validateIp(partsOfIp, ipAndPort))
         {
@@ -30,7 +38,7 @@ function joinServer()
     }
     else
     {
-        if(!server.includes(":"))
+        if(!ServerObj.hasDoubleColon && ServerObj.hasPeriod)
         {
             if(validateIp(partsOfIp, server.concat(":80").split(":")))
             {
@@ -87,7 +95,7 @@ function validateIp(partsOfIp, ipAndPort)
 
 async function sendRequest(server)
 {
-    if(server.endsWith("/"))
+    if(ServerObj.endsWithSlash)
     {
         server = server.concat(tryJoinUri);
     }
@@ -96,14 +104,17 @@ async function sendRequest(server)
         server = server.concat(`/${tryJoinUri}`);
     }
 
+    const reqBody = {
+        password: servPass
+    }
+
     let response = await fetch(server, {
         method: 'POST',
         headers: {
-            /**
-             * TODO: place the headers, I still have no idea what they will be and im too tired to figure out
-             */
-
-        }
+            'Accept': 'application/json',
+            'Content-type': 'application/json'
+        },
+        body: reqBody
     })
 
     // TODO: Keep working on this you lazy boy
