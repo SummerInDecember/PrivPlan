@@ -8,6 +8,6 @@ namespace privplan_api.Models
     public class AllowedDevices
     {
         public int Id { get; set; }
-        public string Key { get; set; } = String.Empty;
+        public string test { get; set; } = String.Empty;
     }
 }

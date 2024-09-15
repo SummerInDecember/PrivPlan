@@ -1,3 +1,5 @@
+const tryJoinUri = 'api/AllowedDevices';
+
 function joinServer()
 {
     let server = document.getElementById("server").value;
@@ -35,6 +37,8 @@ function joinServer()
 
             }
         }
+        else
+            console.log("invalid ip address");
     }
 }
 
@@ -81,7 +85,26 @@ function validateIp(partsOfIp, ipAndPort)
     }
 }
 
-function sendRequest()
+async function sendRequest(server)
 {
-    // TODO: Implement
+    if(server.endsWith("/"))
+    {
+        server = server.concat(tryJoinUri);
+    }
+    else
+    {
+        server = server.concat(`/${tryJoinUri}`);
+    }
+
+    let response = await fetch(server, {
+        method: 'POST',
+        headers: {
+            /**
+             * TODO: place the headers, I still have no idea what they will be and im too tired to figure out
+             */
+
+        }
+    })
+
+    // TODO: Keep working on this you lazy boy
 }

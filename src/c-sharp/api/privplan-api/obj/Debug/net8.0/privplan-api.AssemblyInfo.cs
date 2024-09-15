@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("privplan-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60cceb90d0dd5fae5c334fa9ce813b6ee9773038")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63fab43cec61f872d75f3d472306db6b03ed69c9")]
 [assembly: System.Reflection.AssemblyProductAttribute("privplan-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("privplan-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
