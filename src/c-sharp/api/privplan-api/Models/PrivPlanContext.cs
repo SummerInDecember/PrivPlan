@@ -10,6 +10,6 @@ namespace privplan_api.Models
 
         }
 
-        public DbSet<AllowedDevices> AllowedDevices { get; set; } = null!;
+        public DbSet<AllowedAccounts> AllowedAccounts { get; set; } = null!;
     }
 }
