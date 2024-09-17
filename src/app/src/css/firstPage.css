@@ -1,3 +1,20 @@
+label{
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.form-top{
+    margin-bottom: 1em;
+}
+
+.form-middle{
+    margin-bottom: 1em;
+}
+
+.form-bottom{
+    margin-bottom: 1em;
+}
+
 .mainDiv{
     margin:0%;
     padding: 0%;
@@ -6,39 +23,6 @@
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 15emr;
-    align-content: center;
-    text-align: center;
-}
+    width: 17em;
 
-.mainDiv p{
-    text-align: center;
-    border-bottom: 1px solid black;
-    line-height: 0.1em;
-}
-
-p span{
-    background-color: white;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.mainDiv a:not(:last-child)
-{
-    color: black;
-    text-decoration: none;
-    background-color: blue;
-    padding: 0.7em;
-    padding-left: 1em;
-    padding-right: 1em;
-    border-radius: 0.5em;
-}
-
-.mainDiv a{
-    color: black;
-    text-decoration: none;
-    border-bottom: 1px solid black;
-    padding-top: 0.5em;
-    padding-left: 0.6em;
-    padding-right: 0.6em;
 }

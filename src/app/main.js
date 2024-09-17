@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain} = require('electron/main')
-const path = require('node:path')
+const path = require('path')
 const fs = require("node:fs");
 const os = require("os");
 const { dialog } = require('electron');
@@ -96,3 +96,10 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+ipcMain.on('createAcc', (event, data) => {
+  console.log("STUFF");
+  console.log('Received login data:', data);
+  // You can process or validate the data here
+  // For example, you might send a response back to the renderer process
+});

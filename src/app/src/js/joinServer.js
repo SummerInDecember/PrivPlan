@@ -117,5 +117,5 @@ async function sendRequest(server)
         body: reqBody
     })
 
-    // TODO: Keep working on this you lazy boy
+    // TODO: Keep working on this
 }

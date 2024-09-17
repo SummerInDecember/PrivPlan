@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrivPlan</title>
+    <title>Create Account</title>
     <link rel="stylesheet" href="../css/firstPage.css">
 </head>
 <body>
     <div class="mainDiv">
-        <a href="joinServer.html">Join Server</a>
-        <br>
-        <br>
-        <p><span><i>Or</i></span></p>
-        <br>
-        <a href="">Create Server</a>
-    </div>
+        <h2>Create Account</h2>
+        <form id="createAccForm">
+            <div class="form-top">
+                <label for="username">Username</label>
+                <input name="username" id="username" type="text" required>
+            </div>
+            <div class="form-middle">
+                <label for="passwd">Password</label>
+                <input name="passwd" type="password" id="passwd" required>
+            </div>
+            <div class="form-bottom">
+                <label for="passwd-confirm">Confirm Password</label>
+                <input name="passwd-confirm" type="password" id="passwdConfirm" required>
+            </div>
 
+            <button type="submit">Create Account</button>
+        </form>
+    </div>
     <script src="../js/firstPage.js"></script>
 </body>
 </html>
