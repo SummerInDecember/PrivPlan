@@ -7,6 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using privplan_api.Models;
 using privplan_api.Wrappers;
+using privplan_api.ConfigClasses;
+using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json;
+using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace privplan_api.Controllers
 {
@@ -16,8 +25,21 @@ namespace privplan_api.Controllers
     {
         private readonly PrivPlanContext _context;
 
+        private string _serverConfigPath = String.Empty;
         public AllowedAccountsController(PrivPlanContext context)
         {
+            if(System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                //TODO: Decide where the server config file will be in windows
+            }
+            else if(System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                _serverConfigPath = $"/home/{Environment.UserName}/.config/privplan/server/config.json";
+                
+            }
+            else //TODO: Add support for macos and freebsd
+                Console.WriteLine("Operating system not recognized or not yet supported");
+
             _context = context;
         }
 
@@ -73,16 +95,68 @@ namespace privplan_api.Controllers
             return NoContent();
         }
 
+        private byte[] Hasher(string toHash)
+        {
+            using(HashAlgorithm algo = SHA256.Create())
+                return algo.ComputeHash(Encoding.UTF8.GetBytes(toHash));
+        }
+
+        private async Task<bool> Validate(string enteredPassword)
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(_serverConfigPath);
+                var json = await reader.ReadToEndAsync();
+                List<ServerConfig>? serverConfig = JsonConvert.DeserializeObject<List<ServerConfig>>(json);
+                
+                if(serverConfig != null)
+                {
+                    StringBuilder passwdEnteredHashed = new StringBuilder();
+                    foreach(byte b in Hasher(enteredPassword + serverConfig[0].Salt))
+                    {
+                        passwdEnteredHashed.Append(b.ToString("X2"));
+                    }
+
+                    if(passwdEnteredHashed.ToString() == serverConfig[0].HashedPassword)
+                    {
+                        return true;
+                    }            
+                }
+                else
+                {
+                    Console.WriteLine("««««««««««««««ERROR«««««««««««««««««««««");
+                    Console.WriteLine("     There is no valid config file");
+                    Console.WriteLine("««««««««««««««««««««««««««««««««««««««««");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("««««««««««««««ERROR«««««««««««««««««««««");
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("««««««««««««««««««««««««««««««««««««««««");
+            }
+            return false;
+        }
         // POST: api/AllowedAccounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<AllowedAccounts>> PostAllowedAccounts(AllowedAccountsWrapper allowedAccountsWrapper)
         {
             // TODO: Implement authentication
-            _context.AllowedAccounts.Add(allowedAccountsWrapper.Request);
+
+            bool isValid = await Validate(allowedAccountsWrapper.Password);
+            if(isValid)
+            {
+                _context.AllowedAccounts.Add(allowedAccountsWrapper.Request);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAllowedAccounts", new { id = allowedAccountsWrapper.Request.Id }, allowedAccountsWrapper.Request);
+            }
+            else
+            {
+                return Unauthorized(new {error = "Wrong password or blocked account"});
+            }
+            
         }
 
         // DELETE: api/AllowedAccounts/5
