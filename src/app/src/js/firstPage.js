@@ -10,7 +10,8 @@ document.getElementById("createAccForm").addEventListener('submit', async (event
     let passwdConfirm = document.getElementById("passwdConfirm").value;
 
     if(data.passwd === passwdConfirm)
-        window.versions.send('createAcc', data);
+        window.versions.send('createAcc', data); // Send data to main.js
+                                                 // The signal so it can be recognized in main.js is "createAcc"
     else
     {
         console.log("You made an oopsy");
