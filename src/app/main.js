@@ -108,6 +108,9 @@ app.on('window-all-closed', () => {
  */
 ipcMain.on('createAcc', async (event, data) => {
   
+  if(!(await validateUserNameAndPassword(data.username, data.passwd)))
+    return;
+
   data["salt"] = await genSalt();
   data.passwd = crypto.createHash('sha256').update(`${data.passwd}${data.salt}`).digest('hex');
 
@@ -133,6 +136,7 @@ ipcMain.on('createAcc', async (event, data) => {
 
     globWin.loadFile('src/html/logIn.html');
   })
+  
   // You can process or validate the data here
   // For example, you might send a response back to the renderer process
 });
@@ -155,5 +159,36 @@ async function genSalt()
  */
 async function validateUserNameAndPassword(username, password)
 {
+  // RegExp checks if password contains 1 capital letter, 1 lower case 
+  // letter, 1 digit and one special character (minum)
+  const passwdValidate = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).+$");
 
+  if(username.length < 3)
+  {
+    dialog.showMessageBox(globWin, {
+      type: "error",
+      buttons: ["OK"],
+      title: "Alert",
+      detail: "Username must contain at least 3 characters"
+    });
+
+    return false;
+  }
+
+  if(password.length < 8 || !passwdValidate.test(password))
+  {
+    dialog.showMessageBox(globWin, {
+      type: "error",
+      buttons: ["OK"],
+      title: "Alert",
+      detail: "Password must be larger than 8 characters and it must include: 1 capital letter, 1 lower case\
+      letter, 1 digit and one special character (minum)"
+    });
+
+    return false;
+  }
+
+  return true;
+
+  
 }
