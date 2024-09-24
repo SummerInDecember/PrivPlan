@@ -26,8 +26,6 @@ const createWindow = () => {
 
   globWin = win; 
 
-  try
-  {
   switch(platform)
   {
     case "win32":
@@ -37,50 +35,56 @@ const createWindow = () => {
       console.log("TODO: implement macos features");
       break;
     case "linux":
-      
-      try{
-        fs.access(pathToMainConfigLinux, fs.constants.F_OK, (failedToRead) =>{
-          if(failedToRead)
-            win.loadFile('src/html/firstPage.html');
-          else
-          {    
-            fs.readFile(pathToMainConfigLinux, "utf8", (err, data) => {
-                if(err){
-                  
-                }
-                else{
-                  try{
-                    let mainCfgJson = JSON.parse(data);
-                  }
-                  catch(error)
-                  {
-                    console.log("There was a problem with the json");
-                    win.loadFile('src/html/firstPage.html');
-
-                  }
-                }
-            
-                
-              });
-          }
-        })
-
-      }
-      catch(err){
-
-      }
+      loadLinux(win);
       break;
       
     default:
       console.log("operating system not supported");
       throw "operating system not supported";
   }
-  }
-  catch(err)
-  {
-    if(err === "operating system not supported")
-      process.abort();
-  }
+  
+}
+
+/**
+ * Function gets the config for linux, the function works in the following way:
+ *  - It tries to read the config file, if it fails it loads "firstPage.html"
+ *    which lets an user create an account which creates the config file
+ * 
+ *  - If there is VALID a config file it parses the json and 
+ * 
+ * TODO: Finish the comment and the function
+ */
+function loadLinux(win)
+{
+  try{
+    fs.access(pathToMainConfigLinux, fs.constants.F_OK, (failedToRead) =>{
+      if(failedToRead)
+        win.loadFile('src/html/firstPage.html');
+      else
+      {    
+        fs.readFile(pathToMainConfigLinux, "utf8", (err, data) => {
+          if(err){
+          }
+          else{
+            try{
+              let mainCfgJson = JSON.parse(data);
+            }
+            catch(error)
+            {
+              console.log("There was a problem with the json");
+              win.loadFile('src/html/firstPage.html');
+            }
+          }
+        });
+      }
+    })
+    }
+    catch(err)
+    {
+      console.log("«««««««««««««««ERROR««««««««««««««««««««««");
+      console.log(err);
+      console.log("««««««««««««««««««««««««««««««««««««««««««")
+    }
 }
 
 app.whenReady().then(() => {
@@ -124,8 +128,10 @@ ipcMain.on('createAcc', async (event, data) => {
       type: "info",
       buttons: ["OK"],
       Title: "Alert",
-      detail: `YAY` 
+      detail: `Account created successfully` 
     });
+
+    globWin.loadFile('src/html/logIn.html');
   })
   // You can process or validate the data here
   // For example, you might send a response back to the renderer process
@@ -140,4 +146,14 @@ async function genSalt()
   let buffer = await crypto.randomBytes(64);
   let token = await buffer.toString('hex');
   return token;
+}
+
+/**
+ * Function with awfully long name, but seems discriptive enough to me :)
+ * This is done here instead of the js file linked to the html so that it wont take too long to load
+ * (speed it important i think)
+ */
+async function validateUserNameAndPassword(username, password)
+{
+
 }
