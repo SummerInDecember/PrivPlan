@@ -50,33 +50,39 @@ const createWindow = () => {
  *  - It tries to read the config file, if it fails it loads "firstPage.html"
  *    which lets an user create an account which creates the config file
  * 
- *  - If there is VALID a config file it parses the json and 
+ *  - If there is a VALID config file it parses the json and 
+ * 
+ *  - If there is an INVALID config it deletes the config file after backing
+ *    it up.
  * 
  * TODO: Finish the comment and the function
  */
 function loadLinux(win)
 {
   try{
-    fs.access(pathToMainConfigLinux, fs.constants.F_OK, (failedToRead) =>{
-      if(failedToRead)
-        win.loadFile('src/html/firstPage.html');
-      else
-      {    
-        fs.readFile(pathToMainConfigLinux, "utf8", (err, data) => {
-          if(err){
-          }
-          else{
-            try{
-              let mainCfgJson = JSON.parse(data);
-            }
-            catch(error)
-            {
-              console.log("There was a problem with the json");
-              win.loadFile('src/html/firstPage.html');
-            }
-          }
-        });
+    fs.readFile(pathToMainConfigLinux, "utf8", (failedToRead, data) =>{
+      if(!failedToRead)
+      {     
+        try{
+          let mainCfgJson = JSON.parse(data);
+        }
+        catch(error)
+        {
+          console.log("There was a problem with the json");
+          deleteAndBackUpConfigLinux();
+          win.loadFile('src/html/firstPage.html');
+        }
+
+        return;
       }
+
+      win.loadFile('src/html/firstPage.html');
+
+      /**
+       *  Wow, compared to the old code this is really readable.
+       *  I have no idea why i did the things the way they were done, im just glad it
+       *  worked
+       */
     })
     }
     catch(err)
@@ -85,6 +91,38 @@ function loadLinux(win)
       console.log(err);
       console.log("««««««««««««««««««««««««««««««««««««««««««")
     }
+}
+
+/**
+ *  This function gets called if there was an error with the json config file.
+ *    - This function creates a backup of the config file so that if the user or a 
+ *    developer wants to try to debug the problem they are able to.
+ *  
+ *    - After the config is backed up the original config file is deleted
+ */
+function deleteAndBackUpConfigLinux()
+{
+  fs.readFile(pathToMainConfigLinux, 'utf8', (err, data) => {
+    if(!err)
+    {
+      fs.writeFile(`${pathToMainConfigLinux}.bk`, data, (error) => {
+        error ? console.log("error backing up config file") : console.log("config file backed up");
+      })
+    }
+    else
+      console.log("error reading config file");
+  });
+
+  fs.unlink(pathToMainConfigLinux, (err) => {
+    if(!err)
+    {
+      console.log("config file deleted successfully");
+      return;
+    }
+
+    console.log("error deleting the config file");
+  });
+
 }
 
 app.whenReady().then(() => {
